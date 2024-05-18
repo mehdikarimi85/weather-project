@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #333;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .wrapper {
+            width: 800px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        h1 {
+            padding: 30px 0;
+            color: dodgerblue;
+            font-size: 40px;
+        }
+
+        form {
+            width: 100%;
+            display: flex;
+        }
+
+        form input {
+            flex-grow: 1;
+            height: 40px;
+            padding: 0 5px;
+            outline: 0
+        }
+
+        form button {
+            padding: 0 15px;
+            font-size: 18px;
+            outline: 0;
+        }
+
+        .weather {
+            padding: 15px;
+            border: 1px solid rgba(204, 204, 204, 0.246);
+            margin-top: 12px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .weather>.location>div {
+            margin: 15px 0;
+        }
+
+        .loader {
+            color: #ffffff;
+            font-size: 20px;
+            margin: 100px auto;
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+            position: relative;
+            text-indent: -9999em;
+            -webkit-animation: load4 1.3s infinite linear;
+            animation: load4 1.3s infinite linear;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+            display: none;
+        }
+
+        @-webkit-keyframes load4 {
+
+            0%,
+            100% {
+                box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+            }
+
+            12.5% {
+                box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+            }
+
+            25% {
+                box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+            }
+
+            37.5% {
+                box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+            }
+
+            50% {
+                box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+            }
+
+            62.5% {
+                box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+            }
+
+            75% {
+                box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+            }
+
+            87.5% {
+                box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+            }
+        }
+
+        @keyframes load4 {
+
+            0%,
+            100% {
+                box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+            }
+
+            12.5% {
+                box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+            }
+
+            25% {
+                box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+            }
+
+            37.5% {
+                box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+            }
+
+            50% {
+                box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+            }
+
+            62.5% {
+                box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+            }
+
+            75% {
+                box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+            }
+
+            87.5% {
+                box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+            }
+        }
+
+        .error {
+            font-size: 30px;
+            text-align: center;
+            color: tomato;
+            display: none;
+            padding: 50px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- search weather app project -->
+    <div class="wrapper">
+        <h1>Weather Application</h1>
+        <form action="">
+            <input type="text" placeholder="Enter Country Name">
+            <button>Search</button>
+        </form>
+        <div class="error">There Is some Problem</div>
+        <div class="loader"></div>
+        <div class="weather">
+            <!-- <div class="location">
+                    <div>Country : Iran</div>
+                    <div class="">City : Ardebil</div>
+                    <div class="">50</div>
+                    <div class="">Icon</div>
+                    <div class="">Rainy Sky</div>
+                    <div class="">Current Time : </div>
+                    <div class="">Last Updated</div>
+                </div> -->
+            <div class="location">
+                <div>Country : <span class="country"></span></div>
+                <div>City : <span class="city"></span></div>
+                <div> <span class="deg"></span></div>
+                <div> <img class="icon" src="" alt=""></div>
+                <div> <span class="condition"></span></div>
+                <div>Local Time : <span class="time"></span></div>
+                <div>Last Updated : <span class="last-updated"></span></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // const getWeather = async () => {
+        //     const res = await fetch("http://api.weatherapi.com/v1/current.json?key=4b7dae0287074eab81a101835241505&q=London&aqi=no");
+        //     // console.log(res);
+        //     const data = await res.json();
+        //     console.log(data);
+        // };
+        // getWeather();
+        // console.log("Done"); //It is executed earlier
+
+        // const getWeather = async () => {
+        //     const res = await fetch("http://api.weatherapi.com/v1/current.json?key=4b7dae0287074eab81a101835241505&q=London&aqi=no");
+        //     const data = await res.json();
+        //     console.log(data);
+        // };
+        // getWeather();
+        // console.log("Done");
+
+        // select elements from page
+        const errorText = document.querySelector(".error");
+        const textInput = document.querySelector("form input");
+        const form = document.querySelector("form");
+        const loader = document.querySelector(".loader");
+        const weather = document.querySelector(".weather");
+        const loc = document.querySelector(".location");
+        const country = document.querySelector(".country");
+        const city = document.querySelector(".city");
+        const deg = document.querySelector(".deg");
+        const icon = document.querySelector(".icon");
+        const condition = document.querySelector(".condition");
+        const localTime = document.querySelector(".time");
+        const lastUpdated = document.querySelector(".last-updated");
+
+        // const getWeather = async () => {
+        //     const res = await fetch("http://api.weatherapi.com/v1/current.json?key=4b7dae0287074eab81a101835241505&q=London&aqi=no");
+        //     const data = await res.json();
+        //     console.log(data);
+        //     country.innerHTML = data.location.country;
+        //     city.innerHTML = data.location.name;
+        //     deg.innerHTML = data.current.temp_c;
+        //     icon.src = data.current.condition.icon;
+        //     condition.innerHTML = data.current.condition.text;
+        //     localTime.innerHTML = data.location.localtime;
+        //     lastUpdated.innerHTML = data.current.last_updated;
+        //     weather.style.display = "block";
+        // };
+        // // getWeather();
+        // form.addEventListener("submit", (e) => {
+        //     e.preventDefault();
+        //     console.log(textInput.value);
+        //     getWeather();
+        //     textInput.value = '';
+        // });
+
+        // const getWeather = async (cityName) => {
+        //     // console.log(cityName);
+        //     const res = await fetch(`http://api.weatherapi.com/v1/current.json?key=4b7dae0287074eab81a101835241505&q=${cityName}&aqi=no`);
+        //     // you can send parameter to a url or api
+        //     // after url put ?  then use ${} and parameters went incaseof key and value 
+        //     const data = await res.json();
+        //     // console.log(data);
+        //     country.innerHTML = data.location.country;
+        //     city.innerHTML = data.location.name;
+        //     deg.innerHTML = data.current.temp_c;
+        //     icon.src = data.current.condition.icon;
+        //     condition.innerHTML = data.current.condition.text;
+        //     localTime.innerHTML = data.location.localtime;
+        //     lastUpdated.innerHTML = data.current.last_updated;
+        //     weather.style.display = "block";
+        // };
+        // // getWeather();
+        // form.addEventListener("submit", (e) => {
+        //     e.preventDefault();
+        //     // console.log(textInput.value);
+        //     getWeather(textInput.value.trim());
+        //     textInput.value = '';
+        // });
+
+        // const getWeather = async (cityName) => {
+        //     loader.style.display = "block";
+        //     weather.style.display = "none";
+        //     const res = await fetch(`http://api.weatherapi.com/v1/current.json?key=4b7dae0287074eab81a101835241505&q=${cityName}&aqi=no`);
+        //     // you can send parameter to a url or api
+        //     // after url put ?  then use ${} and parameters went incaseof key and value 
+        //     const data = await res.json();
+        //     country.innerHTML = data.location.country;
+        //     city.innerHTML = data.location.name;
+        //     deg.innerHTML = data.current.temp_c;
+        //     icon.src = data.current.condition.icon;
+        //     condition.innerHTML = data.current.condition.text;
+        //     localTime.innerHTML = data.location.localtime;
+        //     lastUpdated.innerHTML = data.current.last_updated;
+        //     weather.style.display = "block";
+        //     loader.style.display = "none";
+        // };
+        // form.addEventListener("submit", (e) => {
+        //     e.preventDefault();
+        //     getWeather(textInput.value.trim());
+        //     textInput.value = '';
+        // });
+
+
+        // getting error
+        let errorMessage = '';
+        const getWeather = async (cityName) => {
+            try {
+                loader.style.display = "block";
+                weather.style.display = "none";
+                errorText.style.display = "none";
+                const res = await fetch(`http://api.weatherapi.com/v1/current.json?key=4b7dae0287074eab81a101835241505&q=${cityName}&aqi=no`);
+                // you can send parameter to a url or api
+                // after url put ?  then use ${} and parameters went incaseof key and value 
+                const data = await res.json();
+                // console.log(data);
+                if (data.error) {
+                    errorMessage = data.error.message;
+                }
+                country.innerHTML = data.location.country;
+                city.innerHTML = data.location.name;
+                deg.innerHTML = data.current.temp_c;
+                icon.src = data.current.condition.icon;
+                condition.innerHTML = data.current.condition.text;
+                localTime.innerHTML = data.location.localtime;
+                lastUpdated.innerHTML = data.current.last_updated;
+                weather.style.display = "block";
+                loader.style.display = "none";
+
+            } catch (error) {
+                loader.style.display = "none";
+                weather.style.display = "none";
+                errorText.style.display = "block";
+                errorText.innerHTML = errorMessage;
+                setTimeout(() => {
+                    errorText.style.display = "none";
+                }, 2000)
+            }
+        };
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            getWeather(textInput.value.trim());
+            textInput.value = '';
+        });
+
+
+        // getting spinner : https://projects.lukehaas.me/css-loaders/ 
+    </script>
+</body>
+
+</html>
